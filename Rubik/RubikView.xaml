@@ -1,0 +1,64 @@
+﻿<UserControl
+    x:Class="RubikDemo.RubikView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:RubikDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rubik="clr-namespace:Rubik"
+    xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+    d:DataContext="{d:DesignInstance Type=local:RubikViewModel}"
+    mc:Ignorable="d">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Space" Command="{Binding ScrambleCommand}" />
+        <KeyBinding Key="Back" Command="{Binding UnscrambleCommand}" />
+        <KeyBinding Key="OemPlus" Command="{Binding PlusSizeCommand}" />
+        <KeyBinding Key="OemMinus" Command="{Binding MinusSizeCommand}" />
+        <KeyBinding Key="Add" Command="{Binding PlusSizeCommand}" />
+        <KeyBinding Key="Subtract" Command="{Binding MinusSizeCommand}" />
+        <KeyBinding
+            Key="L"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.L}" />
+        <KeyBinding
+            Key="R"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.R}" />
+        <KeyBinding
+            Key="U"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.U}" />
+        <KeyBinding
+            Key="D"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.D}" />
+        <KeyBinding
+            Key="B"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.B}" />
+        <KeyBinding
+            Key="F"
+            Command="{Binding RotateCommand}"
+            CommandParameter="{x:Static Key.F}" />
+    </UserControl.InputBindings>
+
+    <Grid>
+        <t:HelixViewport3D x:Name="view1" Background="Black">
+            <t:DefaultLights />
+            <rubik:RubikCube x:Name="cube1" Size="3">
+                <b:Interaction.Behaviors>
+                    <rubik:RubikCubeToViewModel RubikCube="{Binding RubikCube, Mode=OneWayToSource}" />
+                </b:Interaction.Behaviors>
+            </rubik:RubikCube>
+        </t:HelixViewport3D>
+        <TextBlock
+            x:Name="info"
+            Margin="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontSize="16"
+            Foreground="#80FFFFFF"
+            Text="Keys: L,R,U,D,B,F (rotate), Space (random move), Backspace (undo), +/- change size" />
+    </Grid>
+</UserControl>
