@@ -43,7 +43,12 @@
             CommandParameter="{x:Static Key.F}" />
     </UserControl.InputBindings>
 
-    <Grid>
+    <Grid x:Name="grid">
+
+        <b:Interaction.Behaviors>
+            <rubik:GridToViewModel Grid="{Binding Grid, Mode=OneWayToSource}" />
+        </b:Interaction.Behaviors>
+
         <t:HelixViewport3D x:Name="view1" Background="Black">
             <t:DefaultLights />
             <rubik:RubikCube x:Name="cube1" Size="3">

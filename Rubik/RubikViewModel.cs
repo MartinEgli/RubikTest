@@ -10,6 +10,7 @@ namespace RubikDemo
 
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using System.Windows.Controls;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.CommandWpf;
     using JetBrains.Annotations;
@@ -20,6 +21,7 @@ namespace RubikDemo
     public class RubikViewModel : INotifyPropertyChanged
     {
         private RubikCube rubikCube;
+        private Grid grid;
 
         public RubikViewModel()
         {
@@ -51,6 +53,21 @@ namespace RubikDemo
                 }
 
                 this.rubikCube = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public Grid Grid
+        {
+            get => this.grid;
+            set
+            {
+                if (Equals(value, this.grid))
+                {
+                    return;
+                }
+
+                this.grid = value;
                 this.OnPropertyChanged();
             }
         }
