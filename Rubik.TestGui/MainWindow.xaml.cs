@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RubikDemo;
 
 namespace Rubik.TestGui
 {
@@ -20,15 +21,20 @@ namespace Rubik.TestGui
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<WeakReference<RubikViewModel>> viewModels = new List<WeakReference<RubikViewModel>>();
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new RubikDemo.RubikViewModel();
+            DataContext = new RubikViewModel();
+            viewModels.Add(new WeakReference<RubikViewModel>((RubikViewModel) DataContext));
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new RubikDemo.RubikViewModel();
+            DataContext = new RubikViewModel();
+            viewModels.Add(new WeakReference<RubikViewModel>((RubikViewModel)DataContext));
         }
     }
 }

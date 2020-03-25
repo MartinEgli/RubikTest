@@ -4,22 +4,26 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
-namespace RubikDemo
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using JetBrains.Annotations;
+
+namespace Rubik
 {
     #region
-
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using JetBrains.Annotations;
-    using Rubik;
 
     #endregion
 
     public class RubikViewModel : INotifyPropertyChanged
     {
+
+        private static int index = 0;
+
+        public int Id { get; } = Interlocked.Increment(ref index);
         private RubikCube rubikCube;
         private Grid grid;
 

@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rubik="clr-namespace:Rubik"
     xmlns:t="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
-    d:DataContext="{d:DesignInstance Type=local:RubikViewModel}"
+    d:DataContext="{d:DesignInstance Type=rubik:RubikViewModel}"
     mc:Ignorable="d">
     <UserControl.InputBindings>
         <KeyBinding Key="Space" Command="{Binding ScrambleCommand}" />
@@ -46,14 +46,14 @@
     <Grid x:Name="grid">
 
         <b:Interaction.Behaviors>
-            <rubik:GridToViewModel Grid="{Binding Grid, Mode=OneWayToSource}" />
+            <rubik:Grid2ViewModel Grid="{Binding Grid, Mode=OneWayToSource}" />
         </b:Interaction.Behaviors>
 
         <t:HelixViewport3D x:Name="view1" Background="Black">
             <t:DefaultLights />
             <rubik:RubikCube x:Name="cube1" Size="3">
                 <b:Interaction.Behaviors>
-                    <rubik:RubikCubeToViewModel RubikCube="{Binding RubikCube, Mode=OneWayToSource}" />
+                    <rubik:RubikCube2ViewModel RubikCube="{Binding RubikCube, Mode=OneWayToSource}" />
                 </b:Interaction.Behaviors>
             </rubik:RubikCube>
         </t:HelixViewport3D>

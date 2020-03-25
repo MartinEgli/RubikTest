@@ -4,6 +4,12 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Data;
+using System.Windows.Markup.Primitives;
+using JetBrains.Annotations;
+
 namespace Rubik
 {
     using Microsoft.Xaml.Behaviors;
@@ -12,12 +18,68 @@ namespace Rubik
     #region
 
     using System.Windows;
-    using System.Windows.Controls;
 
     #endregion
 
     public class RubikCubeToViewModel : Behavior<RubikCube>
     {
+        public static readonly DependencyProperty DataContextProperty = DependencyProperty.Register(
+            "DataContext",
+            typeof(object),
+            typeof(RubikCubeToViewModel),
+            new PropertyMetadata(null, OnDataContextPropertyChanged));
+
+        private static void OnDataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((RubikCubeToViewModel)d).FrameworkElementOnDataContextChanged(d,e);
+        }
+
+
+
+        private void FrameworkElementOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            OnDataContextDetaching(e.OldValue);
+            var properties = GetDependencyProperties(this);
+            foreach (var dependencyProperty in properties)
+            {
+                if (dependencyProperty == DataContextProperty)
+                {
+                    continue;
+                }
+                var binding = BindingOperations.GetBinding(this, dependencyProperty);
+                if (binding == null || binding.Source != null || binding.RelativeSource != null ||
+                    binding.ElementName != null) continue;
+                BindingOperations.ClearBinding(this, dependencyProperty);
+                BindingOperations.SetBinding(this, dependencyProperty, binding);
+            }
+            OnDataContextAttached(e.NewValue);
+        }
+
+        private void OnDataContextAttached(object newValue)
+        {
+            this.RubikCube = AssociatedObject;
+
+        }
+
+        private void OnDataContextDetaching(object oldValue)
+        {
+            this.RubikCube = null;
+        }
+
+        public static IEnumerable<DependencyProperty> GetDependencyProperties([NotNull] object element)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            return MarkupWriter.GetMarkupObjectFor(element)
+                .Properties.Where(mp => mp.DependencyProperty != null)
+                .Select(mp => mp.DependencyProperty)
+                .ToList();
+        }
+
+
         public static readonly DependencyProperty RubikCubeProperty = DependencyProperty.Register(
             "RubikCube",
             typeof(RubikCube),
@@ -41,10 +103,27 @@ namespace Rubik
             }
         }
 
+        public object DataContext
+        {
+            get => this.GetValue(DataContextProperty);
+            set => this.SetValue( DataContextProperty, value);
+        }
+
         protected override void OnAttached()
         {
             base.OnAttached();
+            if (DataContext == null || DataContext == DependencyProperty.UnsetValue)
+            {
+                var binding = new Binding();
+                BindingOperations.SetBinding(this, DataContextProperty, binding);
+            }
             this.SetRubikCube();
+        }
+
+        protected override void OnDetaching()
+        {
+            BindingOperations.ClearBinding(this, DataContextProperty);
+            base.OnDetaching();
         }
 
         private void SetRubikCube()
@@ -65,72 +144,8 @@ namespace Rubik
         protected override void OnChanged()
         {
             base.OnChanged();
-            this.SetRubikCube();
-        }
-    }
-
-    public class GridToViewModel : Behavior<Grid>
-    {
-        public static readonly DependencyProperty GridProperty = DependencyProperty.Register(
-            "Grid",
-            typeof(Grid),
-            typeof(GridToViewModel),
-            new PropertyMetadata(default(Grid), OnGridPropertyChanged));
-
-        private static void OnGridPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+ //           this.SetRubikCube();
         }
 
-        public Grid Grid
-        {
-            get
-            {
-                return (Grid)this.GetValue(GridProperty);
-            }
-
-            set
-            {
-                this.SetValue(GridProperty, value);
-            }
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            this.SetRubikCube();
-            AssociatedObject.DataContextChanged += OnDataContextChanged;
-        }
-
-        protected override void OnDetaching()
-        {
-            AssociatedObject.DataContextChanged -= OnDataContextChanged;
-            base.OnDetaching();
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            this.Grid = AssociatedObject;
-        }
-
-        private void SetRubikCube()
-        {
-            if ((!(this.AssociatedObject is Grid grid)))
-            {
-                return;
-            }
-
-            if (grid.Equals(this.Grid))
-            {
-                return;
-            }
-
-            this.Grid = grid;
-        }
-
-        protected override void OnChanged()
-        {
-            base.OnChanged();
-            this.SetRubikCube();
-        }
     }
 }
