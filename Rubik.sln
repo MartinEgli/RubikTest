@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubik", "Rubik\Rubik.csproj", "{706E64C3-A4A9-4666-9FB7-041E23F3869D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubik.TestGui", "..\Rubik.TestGui\Rubik.TestGui.csproj", "{70033F41-3144-4FAF-A23A-920C9906918E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubik.TestGui", "Rubik.TestGui\Rubik.TestGui.csproj", "{70033F41-3144-4FAF-A23A-920C9906918E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
