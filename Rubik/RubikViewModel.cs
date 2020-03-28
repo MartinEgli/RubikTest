@@ -23,9 +23,15 @@ namespace Rubik
 
         private static int index = 0;
 
-        public int Id { get; } = Interlocked.Increment(ref index);
+        public int Id
+        {
+            get { return id; }
+        }
+
         private RubikCube rubikCube;
         private Grid grid;
+        private string name;
+        private readonly int id = Interlocked.Increment(ref index);
 
         public RubikViewModel()
         {
@@ -45,6 +51,18 @@ namespace Rubik
         public ICommand ScrambleCommand { get; }
 
         public ICommand UnscrambleCommand { get; }
+
+
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (value == name) return;
+                name = value;
+                OnPropertyChanged();
+            }
+        }
 
         public RubikCube RubikCube
         {
@@ -112,7 +130,7 @@ namespace Rubik
         }
 
         private void OnScramble()
-        {
+        { 
             this.rubikCube.Scramble();
         }
 

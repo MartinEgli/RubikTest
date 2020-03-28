@@ -46,7 +46,14 @@
     <Grid x:Name="grid">
 
         <b:Interaction.Behaviors>
-            <rubik:Grid2ViewModel Grid="{Binding Grid, Mode=OneWayToSource}" />
+            <rubik:Grid2ViewModel Grid="{Binding Grid, Mode=OneWayToSource}" Id="{Binding Id, Mode=OneTime}">
+                <rubik:Grid2ViewModel.Title>
+                    <MultiBinding Converter="{rubik:MyMultiConverter}">
+                        <Binding Mode="OneWayToSource" Path="Name" />
+                        <Binding Mode="OneWay" Path="Id" />
+                    </MultiBinding>
+                </rubik:Grid2ViewModel.Title>
+            </rubik:Grid2ViewModel>
         </b:Interaction.Behaviors>
 
         <t:HelixViewport3D x:Name="view1" Background="Black">

@@ -51,10 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataContextBehavior.cs" />
+    <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="FrameworkElementBehavior.cs" />
     <Compile Include="Grid2ViewModel.cs" />
     <Compile Include="GridToViewModel.cs" />
     <Compile Include="KeyB.cs" />
+    <Compile Include="MyMultiConverter.cs" />
     <Compile Include="RubikCube2ViewModel.cs" />
     <Compile Include="RubikCubeToViewModel.cs" />
     <Compile Include="RubikView.xaml.cs">

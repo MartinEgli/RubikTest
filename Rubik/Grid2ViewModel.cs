@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Rubik
 {
-    public class Grid2ViewModel : FrameworkElementBehavior<Grid>
+    public class Grid2ViewModel : DataContextBehavior<Grid>
     {
         /// <summary>
         /// The grid property
@@ -12,7 +12,18 @@ namespace Rubik
             "Grid",
             typeof(Grid),
             typeof(Grid2ViewModel),
-            new PropertyMetadata(default(Grid), OnFrameworkElementPropertyChanged));
+            new PropertyMetadata(default(Grid)));
+
+        public static readonly DependencyProperty IdProperty = DependencyProperty.Register("Id", typeof(int), typeof(Grid2ViewModel), new PropertyMetadata(default(int), OnPropertyChangedCallback));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(object), typeof(Grid2ViewModel), new PropertyMetadata(default(object), OnTitlePropertyChangedCallback));
+
+        private static void OnTitlePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
+
+        private static void OnPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
 
 
         /// <summary>
@@ -28,6 +39,18 @@ namespace Rubik
             set => this.SetValue(GridProperty, value);
         }
 
+        public int Id
+        {
+            get { return (int) GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
+        }
+
+        public object Title
+        {
+            get { return (object) GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
         /// </summary>
@@ -38,6 +61,7 @@ namespace Rubik
         {
             base.OnAttached();
             this.SetRubikCube();
+            Title = "Name,Id";
         }
 
 

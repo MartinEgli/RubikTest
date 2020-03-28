@@ -63,11 +63,25 @@ namespace Rubik
             var properties = GetDependencyProperties(this);
             foreach (var dependencyProperty in properties)
             {
-                var binding = BindingOperations.GetBinding(this, dependencyProperty);
-                if (binding == null || binding.Source != null || binding.RelativeSource != null ||
-                    binding.ElementName != null) continue;
-                BindingOperations.ClearBinding(this, dependencyProperty);
-                BindingOperations.SetBinding(this, dependencyProperty, binding);
+                var bindingBase = BindingOperations.GetBindingBase(this, dependencyProperty);
+                switch (bindingBase)
+                {
+                    case Binding binding:
+                    {
+                        if (binding.Source != null ||
+                            binding.RelativeSource != null ||
+                            binding.ElementName != null)
+                        {
+                            continue;
+                        }
+                        BindingOperations.ClearBinding(this, dependencyProperty);
+                        BindingOperations.SetBinding(this, dependencyProperty, binding);
+                        break;
+                    }
+                   
+                }
+
+
             }
             OnDataContextAttached(e.NewValue);
         }
